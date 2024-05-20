@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Projeto Teste</title>
+</head>
+
+<body>
+    <input id="name" placeholder="Nome">
+    <input id="userName" placeholder="Usuário">
+    <br>
+    <input id="email" type="email" placeholder="Email">
+    <input type="password" id="password" placeholder="Senha">
+    <p id="errorBox">a</p>
+    <button id="createButton">Criar Usuário</button>
+    <br>
+    <input id="deleteId" placeholder="Insira ID para deleção">
+    <button id="deleteButton">Deletar Usuário</button>
+    <br>
+    <input id="searchId" placeholder="Insira ID para busca">
+    <button id="searchButton">Buscar Usuário</button>
+    <div id="searchResults"></div>
+
+
+    <script>
+        document.getElementById('searchButton').addEventListener('click', function () {
+            var searchId = document.getElementById('searchId').value;
+            fetch('http://localhost:1337/user/' + searchId)
+                .then(response => response.json())
+                .then(data => {
+                    var tag = document.createElement("p");
+                    var text = document.createTextNode(data.nome);
+                    tag.appendChild(text);
+                    var element = document.getElementById("searchResults");
+                    element.appendChild(tag);
+                })
+                .catch((error) => console.error('Error:', error));
+        });
+        document.getElementById('deleteButton').addEventListener('click', function () {
+            fetch('http://localhost:1337/user/' + document.getElementById('deleteId').value, {
+                method: 'DELETE'
+            })
+                .then(response => response.text())
+                .then(result => console.log('Success:', result))
+                .catch(error => console.error('Error:', error));
+        });
+        document.getElementById('createButton').addEventListener('click', function () {
+            fetch('http://localhost:1337/user', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ nome: document.getElementById('name').value, username: document.getElementById('userName').value, senha: document.getElementById('password').value, email: document.getElementById('email').value })
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(text => { throw new Error(text)});
+                    }
+                    return response.json();
+
+                })
+                .then(data => document.getElementById('errorBox').innerText = "Usuário "+ data.username + ' registrado com sucesso!')
+                .catch((error) => document.getElementById('errorBox').innerText = error.message);
+        });
+    </script>
+</body>
+
+</html>
