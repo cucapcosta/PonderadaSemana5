@@ -6,6 +6,8 @@ module.exports = {
         username: await sails.helpers.usernameformating(req.body.username),
         senha: req.body.senha,
         email: await sails.helpers.emailformating(req.body.email),
+        cep: req.body.cep,
+        cidade: await sails.helpers.consultacep(req.body.cep),
       }).fetch();
       return res.status(201).json(newUser);
     } catch (error) {
@@ -35,3 +37,4 @@ module.exports = {
     }
   },
 };
+

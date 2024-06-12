@@ -12,6 +12,7 @@
     <br>
     <input id="email" type="email" placeholder="Email">
     <input type="password" id="password" placeholder="Senha">
+    <input id="cep" placeholder="CEP">
     <p id="errorBox">a</p>
     <button id="createButton">Criar Usuário</button>
     <br>
@@ -51,7 +52,7 @@
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ nome: document.getElementById('name').value, username: document.getElementById('userName').value, senha: document.getElementById('password').value, email: document.getElementById('email').value })
+                body: JSON.stringify({ nome: document.getElementById('name').value, username: document.getElementById('userName').value, senha: document.getElementById('password').value, email: document.getElementById('email').value, cep: document.getElementById('cep').value })
             })
                 .then(response => {
                     if (!response.ok) {
